@@ -22,12 +22,14 @@ const CreateCampaignForm = () => {
     const { selectedContacts } = useSelector((state) => state.contact)
 
     const handleStartDateChange = (date) => {
-        const local_time = moment(date).format('YYYY-MM-DDTHH:mm:ssZ')
+        const local_time = moment(date).toISOString();
         setLocalStartDate(local_time)
         console.log(local_time)
     }
-    const handleEndDateChange = () => {
-
+    const handleEndDateChange = (date) => {
+        const local_time = moment(date).toISOString();
+        setLocalEndDate(local_time);
+        console.log(local_time);
     }
     const handleFileChange = (event) => {
         if (event.target.files && event.target.files[0]) {
