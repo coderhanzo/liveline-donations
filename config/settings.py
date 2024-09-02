@@ -132,7 +132,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-DATETIME_INPUT_FORMATS = [
+TIME_INPUT_FORMATS = [
     '%Y-%m-%d %H:%M:%S',
     '%Y-%m-%dT%H:%M:%S.%fZ',
     '%d-%m-%Y %H:%M:%S',
