@@ -26,7 +26,7 @@ class MonetaryCampaign(models.Model):
     )
     goal = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True)
     description = models.TextField(max_length=250, blank=True, null=True)
-    start_date = models.DateTimeField(default=timezone.now)
+    start_date = models.DateTimeField(blank=True, null=True) #default=timezone.now
     end_date = models.DateTimeField(blank=True, null=True)
     subscribers = models.ManyToManyField(
         AccountProfile, blank=True, related_name="subscribed_campaigns"
