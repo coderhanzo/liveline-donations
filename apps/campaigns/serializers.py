@@ -99,6 +99,7 @@ model_mapping = {
 
 class MonetaryCampaignSerializer(serializers.ModelSerializer):
     beneficiaries = serializers.SerializerMethodField(required=False)
+    # start_date = serializers.DateField(input_formats=["%Y-%m-%d", "iso-8601"])
 
     class Meta:
         model = MonetaryCampaign
