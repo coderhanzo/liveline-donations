@@ -398,10 +398,13 @@ def delete_contact(request):
 
 class GetContacts(generics.ListAPIView):
     serializer_class = AccountProfileReturnSerializer
+    permission_classes = [permissions.AllowAny]
+    
 
     def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            raise PermissionDenied(detail="You must be logged in to view contacts")
+        qureyset = AccountProfile.objects.all()
         if not self.request.user.is_superuser:
-            return AccountProfile.objects.filter(
-                associated_institution=self.request.user.institution
-            )
-        return AccountProfile.objects.all()
+            qureyset = qureyset.filter(associated_institution=self.request.user.institution)
+        return qureyset
