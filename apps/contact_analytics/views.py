@@ -400,7 +400,6 @@ class GetContacts(generics.ListAPIView):
     serializer_class = AccountProfileReturnSerializer
     permission_classes = [permissions.AllowAny]
     
-
     def get_queryset(self):
         if not self.request.user.is_authenticated:
             raise PermissionDenied(detail="You must be logged in to view contacts")
