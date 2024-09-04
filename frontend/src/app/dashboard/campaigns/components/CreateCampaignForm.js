@@ -12,6 +12,7 @@ import CurrencyInput from 'react-currency-input-field';
 const CreateCampaignForm = () => {
     const [localStartDate, setLocalStartDate] = useState(new Date())
     const [localEndDate, setLocalEndDate] = useState(new Date())
+    const { timezone } = useSelector((state) => state.profile);
     const [localName, setLocalName] = useState('')
     const [localGoal, setLocalGoal] = useState('')
     const [localDescription, setLocalDescription] = useState('')
@@ -22,12 +23,12 @@ const CreateCampaignForm = () => {
     const { selectedContacts } = useSelector((state) => state.contact)
 
     const handleStartDateChange = (date) => {
-        const local_time = moment(date).toISOString();
+        const local_time = moment(date).format('YYYY-MM-DDTHH:mm:ssZ')
         setLocalStartDate(local_time)
         console.log(local_time)
     }
     const handleEndDateChange = (date) => {
-        const local_time = moment(date).toISOString();
+        const local_time = moment(date).format('YYYY-MM-DDTHH:mm:ssZ');
         setLocalEndDate(local_time);
         console.log(local_time);
     }
@@ -49,6 +50,7 @@ const CreateCampaignForm = () => {
         formData.append('name', localName)
         formData.append('description', localDescription)
         formData.append('start_date', localStartDate)
+        formData.append('end_date',localEndDate)
         formData.append('goal', localGoal)
         // Don't add photo if it is null, that will throw error on backend
         if (photo) {

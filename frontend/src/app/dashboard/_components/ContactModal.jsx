@@ -70,45 +70,46 @@ const ContactModal = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (!isValidEmail(email)) {
-    //     /* replace with react toastify */
-    //     alert('Invalid email');
-    //     return;
-    // }
-    const contactData = new FormData();
-    contactData.append("id", selectedContact?.id || "");
-    contactData.append("given_name", firstName);
-    contactData.append("last_name", lastName);
-    contactData.append("email", email);
-    contactData.append("contact_type", contactType);
-    contactData.append("company", company);
-    contactData.append("phone_number", phoneNumber);
-    contactData.append("hospital", hospital);
-    contactData.append("notes", notes);
-    contactData.append("donor_type", donorType);
-    contactData.append("cause", cause);
+
+    const contactData = {
+      id: selectedContact?.id || "",
+      given_name: firstName,
+      last_name: lastName,
+      email: email,
+      contact_type: contactType,
+      company: company,
+      phone_number: phoneNumber,
+      hospital: hospital,
+      notes: notes,
+      donor_type: donorType,
+      cause: cause,
+      // If your backend expects the profile photo in the request, you need to handle it separately.
+    };
 
     if (profilePhoto) {
-      contactData.append("profile_photo", profilePhoto); // Ensure your backend expects this field
-    }
+      contactData.append('profile_photo', profilePhoto)
+    };
+
+    const jsonData = JSON.stringify(contactData);
+
     if (selectedContact) {
-      dispatch(editContact(contactData));
+      dispatch(editContact(jsonData));
     } else {
       if (!contactType) {
-        // Assuming 'contactType' is your state variable for tracking this
         toast.error("Please select a contact type (Donor or Patient)");
         return;
       }
       if (!firstName && !lastName) {
         toast.error("Please give either a given name or last name");
+        return;
       }
-      dispatch(addContact(contactData));
+      dispatch(addContact(jsonData));
     }
   };
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Changes Successfull!");
+      toast.success("Contact Created Successfully!");
       // So that Add Contact becomes available
       dispatch(setSelectedContact(null));
 
@@ -144,7 +145,7 @@ const ContactModal = () => {
       >
         <div className="relative w-full max-w-2xl  ">
           {/* // Modal Content */}
-          <form className="relative bg-white rounded-2xl shadow ">
+          <form className="relative bg-white rounded-2xl shadow " onSubmit={handleSubmit}>
             {/* //Modal Header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t ">
               <h3 className="text-xl font-semibold text-gray-900 ">
@@ -169,7 +170,7 @@ const ContactModal = () => {
                     htmlFor="first-name"
                     className="block mb-2 text-sm font-medium text-gray-900 "
                   >
-                    Given Names
+                    First Name
                   </label>
                   <input
                     type="text"
@@ -177,9 +178,7 @@ const ContactModal = () => {
                     id="first-name"
                     value={firstName}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 "
-                    placeholder={
-                      selectedContact ? selectedContact.first_name : "Bonnie"
-                    }
+                    placeholder="First Name"
                     onChange={(e) => setFirstName(e.target.value)}
                     required=""
                   />
@@ -189,7 +188,7 @@ const ContactModal = () => {
                     htmlFor="last-name"
                     className="block mb-2 text-sm font-medium text-gray-900 "
                   >
-                    Last Names
+                    Last Name
                   </label>
                   <input
                     type="text"
@@ -197,7 +196,7 @@ const ContactModal = () => {
                     id="last-name"
                     value={lastName}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                    placeholder="Green"
+                    placeholder="Last Name"
                     onChange={(e) => setLastName(e.target.value)}
                     required=""
                   />
@@ -415,7 +414,6 @@ const ContactModal = () => {
               <button
                 type="submit"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                onClick={handleSubmit}
               >
                 Save all
               </button>
