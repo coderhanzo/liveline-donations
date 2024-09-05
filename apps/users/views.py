@@ -132,7 +132,7 @@ def signup_view(request):
         "email": request.data.get("email"),
         "password": request.data.get("password"),
         "phone_number": request.data.get("phone_number"),
-        "bsystems_admin": request.data.get("bsystems_admin"),
+        # "bsystems_admin": request.data.get("bsystems_admin"),
         "institution_admin": request.data.get("institution_admin"),
         "institution_name": request.data.get("institution_name"),
         # Add other fields as needed
@@ -140,7 +140,7 @@ def signup_view(request):
 
     if user_data.get("institution_admin"):
         institution_serializer = InstitutionSerializer(
-            data={"name": user_data.get("institution_name")}
+            data={"institution_name": user_data.get("institution_name")}
         )
         institution_serializer.is_valid(raise_exception=True)
         instituation_instance = institution_serializer.save()

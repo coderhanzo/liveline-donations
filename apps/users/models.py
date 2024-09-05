@@ -14,7 +14,7 @@ class Institution(models.Model):
         primary_key=True, unique=True, default=uuid.uuid4, editable=False
     )
     # institution id should not be guessable
-    name = models.CharField(max_length=255, verbose_name="Institution Name")
+    institution_name = models.CharField(max_length=255, verbose_name="Institution Name")
 
     def __str__(self):
         return f"{self.name} {self.id}"

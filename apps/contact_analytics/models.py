@@ -2,7 +2,7 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.translation import gettext_lazy as _
 from schedule.models import Event
-from apps.users.models import Institution
+from apps.users.models import Institution, User
 
 # Create your models here.
 
@@ -84,6 +84,9 @@ class AccountProfile(models.Model):
         on_delete=models.PROTECT,
         blank=True,
         null=True,
+    )
+    created_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, blank=True, null=True
     )
 
     def __str__(self):
