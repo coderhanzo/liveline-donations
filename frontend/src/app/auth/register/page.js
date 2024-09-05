@@ -78,7 +78,7 @@ const RegisterPage = () => {
 
                     <div className="col-span-3 sm:col-span-3">
                         <label className="block mb-2 text-sm text-gray-600">Upload National ID</label>
-                        <input type="file" className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                        <input type="file" accept=".jpg, .png, .jpeg" className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                     </div>
 
                     <div className="col-span-2 sm:col-span-3 my-6 sm:mt-6 sm:mb-0">
@@ -96,12 +96,12 @@ const RegisterPage = () => {
 
                     <div className={`col-span-2 sm:col-span-1 ${institution_admin ? '' : 'hidden'}`}>
                         <label htmlFor="business_cert" className="block mb-2 text-sm font-medium text-gray-900">Upload Organization Certificate</label>
-                        <input type="file" name="business_cert" id="business_cert" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" />
+                        <input type="file" accept=".jpg, .jpeg, .png" name="business_cert" id="business_cert" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" />
                     </div>
 
                     <div className={`col-span-2 sm:col-span-1 ${institution_admin ? '' : 'hidden'}`}>
                         <label htmlFor="business_cert" className="block mb-2 text-sm font-medium text-gray-900">Upload NPO License</label>
-                        <input type="file" name="business_cert" id="business_cert" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" />
+                        <input type="file" accept=".jpg, .jpeg, .png" name="business_cert" id="business_cert" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" />
                     </div>
 
                     <div className="col-span-3 sm:col-span-3 flex flex-col md:flex-row md:items-center md:justify-between mt-8 md:mt-4 space-y-4 md:space-y-0">

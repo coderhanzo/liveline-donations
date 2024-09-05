@@ -211,14 +211,14 @@ def add_cause_to_patient(patient_instance, cause_title):
 """
 To better understand this comment, the function create_or_edit_instance used to be below it
 Create or Edit factory, blessed us with this gem after I wrote the stuff above.
-Probably want to incorporate some of those above. The difference is that the once below, should be selectable on the frontend, thus changable by id and not by other fields
+Probably want to incorporate some of those above. The difference is that the once below, 
+should be selectable on the frontend, thus changable by id and not by other fields
 This allows beneficiary types to change or even become a donor.
 Since each beneficiary has its own model, there is no clean up when beneficiary type changes.
 Good for data analytics/ big data, but could also bloat the db, really depends on if we want to hold previous type for a contact.
 I believe that there will be cases where we do want that, like if a welfare campaign becomes a community dev, with the same contact, no data is overwritten.
 Flow: Edit AccountProfile which has SocialWelfare Ben to Com Dev > Com Dev does not exist > Com Dev gets created
 > accountProfile now points to both SocialWelfare row and Com Dev row
-
 """
 
 
@@ -398,10 +398,12 @@ def delete_contact(request):
 
 class GetContacts(generics.ListAPIView):
     serializer_class = AccountProfileReturnSerializer
-
+    permission_classes = [permissions.AllowAny]
+    
     def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            raise PermissionDenied(detail="You must be logged in to view contacts")
+        qureyset = AccountProfile.objects.all()
         if not self.request.user.is_superuser:
-            return AccountProfile.objects.filter(
-                associated_institution=self.request.user.institution
-            )
-        return AccountProfile.objects.all()
+            qureyset = qureyset.filter(associated_institution=self.request.user.institution)
+        return qureyset

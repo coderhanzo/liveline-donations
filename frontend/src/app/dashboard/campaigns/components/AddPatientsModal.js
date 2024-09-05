@@ -288,7 +288,7 @@ const AddPatientsModal = () => {
                                     {types_with_given_name_field.includes(beneficiary_type) && (
                                         <div className="flex flex-col w-full 2xl:flex-row  max-2xl:space-y-6 2xl:space-x-4">
                                             <div className="flex flex-col max-md:w-full">
-                                                <label htmlFor="given_name" className="block mb-2 text-sm font-medium text-gray-900 ">Given Name</label>
+                                                <label htmlFor="given_name" className="block mb-2 text-sm font-medium text-gray-900 ">First Name</label>
                                                 <input type="text" name="given_name" value={local_given_name} id="given_name" className=" shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 " placeholder="Bonnie" required="" onChange={(e) => setLocalGivenName(e.target.value)} />
                                                 <p className="text-xs text-zinc-400">Leave blank if not applicable</p>
                                             </div>
