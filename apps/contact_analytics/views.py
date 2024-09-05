@@ -1,5 +1,6 @@
 import csv
 import json
+from urllib import request
 from utils.photo_validation import validate_file_type
 from utils.beneficiary_registry import (
     get_model,
@@ -252,6 +253,9 @@ def create_or_update_account(data, files=None):
         if not data.get("name"):
             data["name"] = f"{data.get('given_name', '')} {data.get('last_name', '')}"
         data["is_active"] = True
+        user = request.user
+        if user:
+            data["created_by"] = user.id
         # Create a new instance
         account_serializer = AccountProfileSerializer(data=data)
     account_serializer.is_valid(raise_exception=True)
@@ -302,6 +306,7 @@ class addContact(APIView):
         data = request.data.dict()
         data["associated_institution"] = request.user.institution.id
         # Form Data so data object is immutable
+        data["created_by"] = request.user.institution.id
         account_instance = create_or_update_account(data, request.FILES)
 
         # comes after AccountProfileSerializer so that we know a valid beneficiary was selected
@@ -396,14 +401,21 @@ def delete_contact(request):
     )
 
 
-class GetContacts(generics.ListAPIView):
-    serializer_class = AccountProfileReturnSerializer
-    permission_classes = [permissions.AllowAny]
-    
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            raise PermissionDenied(detail="You must be logged in to view contacts")
-        qureyset = AccountProfile.objects.all()
-        if not self.request.user.is_superuser:
-            qureyset = qureyset.filter(associated_institution=self.request.user.institution)
-        return qureyset
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+def get_contacts(request):
+    user = request.user
+
+    # If the user is institution_admin, return all contacts for the institution
+    if user.institution_admin == True:
+        queryset = AccountProfile.objects.filter(
+            associated_institution=user.institution, is_active=True
+        )
+    else:
+        # If the user is not an admin, return only contacts created by the user
+        queryset = AccountProfile.objects.filter(created_by=user, is_active=True)
+
+    # Serialize the queryset and return the response
+    serializer = AccountProfileReturnSerializer(queryset, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
