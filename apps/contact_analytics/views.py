@@ -401,19 +401,6 @@ def delete_contact(request):
     )
 
 
-<<<<<<< HEAD
-class GetContacts(generics.ListAPIView):
-    serializer_class = AccountProfileReturnSerializer
-    permission_classes = [permissions.AllowAny]
-    
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            raise PermissionDenied(detail="You must be logged in to view contacts")
-        qureyset = AccountProfile.objects.all()
-        if not self.request.user.is_superuser:
-            qureyset = qureyset.filter(associated_institution=self.request.user.institution)
-        return qureyset
-=======
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 @authentication_classes([JWTAuthentication])
@@ -432,4 +419,3 @@ def get_contacts(request):
     # Serialize the queryset and return the response
     serializer = AccountProfileReturnSerializer(queryset, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
->>>>>>> c7a7c1b74f0e3ca41c2dd59b5e4235f6f9dfcd4c
