@@ -253,9 +253,9 @@ def create_or_update_account(data, files=None):
         if not data.get("name"):
             data["name"] = f"{data.get('given_name', '')} {data.get('last_name', '')}"
         data["is_active"] = True
-        user = request.user
-        if user:
-            data["created_by"] = user.id
+        # user = request.user
+        # if user:
+        #     data["created_by"] = user.id
         # Create a new instance
         account_serializer = AccountProfileSerializer(data=data)
     account_serializer.is_valid(raise_exception=True)
@@ -305,8 +305,8 @@ class addContact(APIView):
     def post(self, request):
         data = request.data.dict()
         data["associated_institution"] = request.user.institution.id
+        data["created_by"] = request.user.id
         # Form Data so data object is immutable
-        data["created_by"] = request.user.institution.id
         account_instance = create_or_update_account(data, request.FILES)
 
         # comes after AccountProfileSerializer so that we know a valid beneficiary was selected
